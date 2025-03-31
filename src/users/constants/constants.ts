@@ -6,6 +6,7 @@ export const USER_SELECT_FIELDS = {
 };
 
 export const USER_PASSWORD = {
+  id: true,
   email: true,
   password: true,
 };

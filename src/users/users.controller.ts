@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   ValidationPipe,
 } from '@nestjs/common';
+import { Public } from '../auth/public/public.decorator';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/crate-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -18,15 +19,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @Public()
   @Get()
   getAll(@Query('status') status?: 'ACTIVE' | 'INACTIVE') {
     return this.usersService.findAll(status);
   }
 
-  @Post('login')
-  getOneByEmail(@Body(ValidationPipe) updateUserDto: UpdateUserDto) {
-    return this.usersService.findOneByEmail(updateUserDto.email || '');
-  }
+  // @Post('login')
+  // getOneByEmail(@Body(ValidationPipe) updateUserDto: UpdateUserDto) {
+  //   return this.usersService.findOneByEmail(updateUserDto.email || '');
+  // }
 
   @Get(':id')
   getOne(@Param('id', ParseIntPipe) id: number) {

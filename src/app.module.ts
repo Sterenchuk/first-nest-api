@@ -5,15 +5,16 @@ import { DatabaseModule } from './database/database.module';
 import { EmployeesModule } from './employees/employees.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 
-const enviroment = process.env.NODE_ENV || 'development';
-const connection = process.env.MONGODB_WRITE_CONECTION_STRING || 'localhost';
+const environment = process.env.NODE_ENV || 'development';
 
 @Module({
   imports: [
     UsersModule,
     DatabaseModule,
     EmployeesModule,
+    AuthModule, // Import AuthModule here
     ThrottlerModule.forRoot([
       {
         name: 'short',
@@ -27,14 +28,14 @@ const connection = process.env.MONGODB_WRITE_CONECTION_STRING || 'localhost';
       },
     ]),
     ConfigModule.forRoot({
-      envFilePath: `.env.${enviroment}`,
+      envFilePath: `.env.${environment}`,
       isGlobal: true,
     }),
   ],
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: ThrottlerGuard, // Apply rate limiting globally
     },
   ],
 })
